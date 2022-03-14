@@ -2,7 +2,7 @@
 
 namespace Model.Migrations
 {
-    public partial class sd : Migration
+    public partial class gdg : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,32 +30,23 @@ namespace Model.Migrations
                 name: "TaalISOTaalCode",
                 table: "LandTaal");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "ISOTaalCode",
-                table: "Talen",
-                type: "nvarchar(2)",
-                maxLength: 2,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
             migrationBuilder.CreateIndex(
-                name: "IX_LandTaal_TaalCode",
+                name: "IX_LandTaal_ISOTaalCode",
                 table: "LandTaal",
-                column: "TaalCode");
+                column: "ISOTaalCode");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LandTaal_Landen_LandCode",
+                name: "FK_Reservatie_Land",
                 table: "LandTaal",
-                column: "LandCode",
+                column: "ISOLandCode",
                 principalTable: "Landen",
                 principalColumn: "ISOLandCode",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LandTaal_Talen_TaalCode",
+                name: "FK_Reservatie_Taal",
                 table: "LandTaal",
-                column: "TaalCode",
+                column: "ISOTaalCode",
                 principalTable: "Talen",
                 principalColumn: "ISOTaalCode",
                 onDelete: ReferentialAction.Cascade);
@@ -64,25 +55,16 @@ namespace Model.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_LandTaal_Landen_LandCode",
+                name: "FK_Reservatie_Land",
                 table: "LandTaal");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_LandTaal_Talen_TaalCode",
+                name: "FK_Reservatie_Taal",
                 table: "LandTaal");
 
             migrationBuilder.DropIndex(
-                name: "IX_LandTaal_TaalCode",
+                name: "IX_LandTaal_ISOTaalCode",
                 table: "LandTaal");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ISOTaalCode",
-                table: "Talen",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(2)",
-                oldMaxLength: 2);
 
             migrationBuilder.AddColumn<string>(
                 name: "LandISOLandCode",
@@ -93,7 +75,7 @@ namespace Model.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "TaalISOTaalCode",
                 table: "LandTaal",
-                type: "nvarchar(450)",
+                type: "nvarchar(2)",
                 nullable: true);
 
             migrationBuilder.CreateIndex(

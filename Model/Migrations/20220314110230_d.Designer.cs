@@ -9,8 +9,8 @@ using Model.Repositories;
 namespace Model.Migrations
 {
     [DbContext(typeof(TestEntityContext))]
-    [Migration("20220314092231_gf")]
-    partial class gf
+    [Migration("20220314110230_d")]
+    partial class d
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,21 +19,6 @@ namespace Model.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("LandTaal", b =>
-                {
-                    b.Property<string>("LandenISOLandCode")
-                        .HasColumnType("nvarchar(2)");
-
-                    b.Property<string>("talenISOTaalCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LandenISOLandCode", "talenISOTaalCode");
-
-                    b.HasIndex("talenISOTaalCode");
-
-                    b.ToTable("LandenTalen");
-                });
 
             modelBuilder.Entity("Model.Entities.Land", b =>
                 {
@@ -192,6 +177,31 @@ namespace Model.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Model.Entities.LandTaal", b =>
+                {
+                    b.Property<string>("LandCode")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("TaalCode")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("LandISOLandCode")
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("TaalISOTaalCode")
+                        .HasColumnType("nvarchar(2)");
+
+                    b.HasKey("LandCode", "TaalCode");
+
+                    b.HasIndex("LandISOLandCode");
+
+                    b.HasIndex("TaalISOTaalCode");
+
+                    b.ToTable("LandTaal");
+                });
+
             modelBuilder.Entity("Model.Entities.Stad", b =>
                 {
                     b.Property<int>("StadId")
@@ -203,13 +213,16 @@ namespace Model.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<string>("LandISOLandCode")
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<string>("Naam")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("StadId");
 
-                    b.HasIndex("IsoLandCode");
+                    b.HasIndex("LandISOLandCode");
 
                     b.ToTable("Steden");
 
@@ -297,7 +310,8 @@ namespace Model.Migrations
             modelBuilder.Entity("Model.Entities.Taal", b =>
                 {
                     b.Property<string>("ISOTaalCode")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("NaamNL")
                         .HasMaxLength(50)
@@ -452,33 +466,40 @@ namespace Model.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LandTaal", b =>
+            modelBuilder.Entity("Model.Entities.LandTaal", b =>
                 {
-                    b.HasOne("Model.Entities.Land", null)
-                        .WithMany()
-                        .HasForeignKey("LandenISOLandCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Model.Entities.Land", "Land")
+                        .WithMany("LandTaal")
+                        .HasForeignKey("LandISOLandCode");
 
-                    b.HasOne("Model.Entities.Taal", null)
-                        .WithMany()
-                        .HasForeignKey("talenISOTaalCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Model.Entities.Taal", "Taal")
+                        .WithMany("LandTaal")
+                        .HasForeignKey("TaalISOTaalCode");
+
+                    b.Navigation("Land");
+
+                    b.Navigation("Taal");
                 });
 
             modelBuilder.Entity("Model.Entities.Stad", b =>
                 {
                     b.HasOne("Model.Entities.Land", "Land")
                         .WithMany("Steden")
-                        .HasForeignKey("IsoLandCode");
+                        .HasForeignKey("LandISOLandCode");
 
                     b.Navigation("Land");
                 });
 
             modelBuilder.Entity("Model.Entities.Land", b =>
                 {
+                    b.Navigation("LandTaal");
+
                     b.Navigation("Steden");
+                });
+
+            modelBuilder.Entity("Model.Entities.Taal", b =>
+                {
+                    b.Navigation("LandTaal");
                 });
 #pragma warning restore 612, 618
         }

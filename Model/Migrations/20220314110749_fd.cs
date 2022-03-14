@@ -2,7 +2,7 @@
 
 namespace Model.Migrations
 {
-    public partial class fsff : Migration
+    public partial class fd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

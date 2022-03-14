@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Model.Repositories;
 
 namespace Model.Migrations
 {
     [DbContext(typeof(TestEntityContext))]
-    partial class TestEntityContextModelSnapshot : ModelSnapshot
+    [Migration("20220314114308_stedenconfig")]
+    partial class stedenconfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,21 +258,24 @@ namespace Model.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp");
 
-                    b.Property<string>("ISOLandCode")
-                        .IsRequired()
+                    b.Property<string>("IsoLandCode")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
+                    b.Property<string>("LandISOLandCode")
                         .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("Naam")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("StadId");
 
-                    b.HasIndex("ISOLandCode");
+                    b.HasIndex("LandISOLandCode");
 
                     b.HasIndex("Naam")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Naam] IS NOT NULL");
 
                     b.ToTable("Steden");
 
@@ -278,79 +283,79 @@ namespace Model.Migrations
                         new
                         {
                             StadId = 1,
-                            ISOLandCode = "BE",
+                            IsoLandCode = "BE",
                             Naam = "Brussel"
                         },
                         new
                         {
                             StadId = 2,
-                            ISOLandCode = "BE",
+                            IsoLandCode = "BE",
                             Naam = "Antwerpen"
                         },
                         new
                         {
                             StadId = 3,
-                            ISOLandCode = "BE",
+                            IsoLandCode = "BE",
                             Naam = "Luik"
                         },
                         new
                         {
                             StadId = 4,
-                            ISOLandCode = "NL",
+                            IsoLandCode = "NL",
                             Naam = "Amsterdam"
                         },
                         new
                         {
                             StadId = 5,
-                            ISOLandCode = "NL",
+                            IsoLandCode = "NL",
                             Naam = "Den Haag"
                         },
                         new
                         {
                             StadId = 6,
-                            ISOLandCode = "NL",
+                            IsoLandCode = "NL",
                             Naam = "Rotterdam"
                         },
                         new
                         {
                             StadId = 7,
-                            ISOLandCode = "DE",
+                            IsoLandCode = "DE",
                             Naam = "Berlijn"
                         },
                         new
                         {
                             StadId = 8,
-                            ISOLandCode = "DE",
+                            IsoLandCode = "DE",
                             Naam = "Hamburg"
                         },
                         new
                         {
                             StadId = 9,
-                            ISOLandCode = "DE",
+                            IsoLandCode = "DE",
                             Naam = "München"
                         },
                         new
                         {
                             StadId = 10,
-                            ISOLandCode = "LU",
+                            IsoLandCode = "LU",
                             Naam = "Luxemburg"
                         },
                         new
                         {
                             StadId = 11,
-                            ISOLandCode = "FR",
+                            IsoLandCode = "FR",
                             Naam = "Parijs"
                         },
                         new
                         {
                             StadId = 12,
-                            ISOLandCode = "FR",
+                            IsoLandCode = "FR",
                             Naam = "Marseille"
                         },
                         new
                         {
                             StadId = 13,
-                            ISOLandCode = "FR",
+                            IsoLandCode = "FR",
                             Naam = "Lyon"
                         });
                 });
@@ -362,7 +367,6 @@ namespace Model.Migrations
                         .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("NaamNL")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -371,13 +375,6 @@ namespace Model.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ISOTaalCode");
-
-                    b.HasIndex("NaamNL")
-                        .IsUnique();
-
-                    b.HasIndex("NaamTaal")
-                        .IsUnique()
-                        .HasFilter("[NaamTaal] IS NOT NULL");
 
                     b.ToTable("Talen");
 
@@ -547,10 +544,7 @@ namespace Model.Migrations
                 {
                     b.HasOne("Model.Entities.Land", "Land")
                         .WithMany("Steden")
-                        .HasForeignKey("ISOLandCode")
-                        .HasConstraintName("FK_Reservatie_Land1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LandISOLandCode");
 
                     b.Navigation("Land");
                 });

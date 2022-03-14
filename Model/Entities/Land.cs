@@ -17,6 +17,8 @@ namespace Model.Entities
         public int AantalInwoners { get; set; }
         public float Oppervlakte { get; set; }
 
+        public byte[] Aangepast { get; set; }
+
         public virtual ICollection<Stad> Steden { get; set; } = new List<Stad>();
         public virtual ICollection<LandTaal> LandTaal { get; set; } = new List<LandTaal>();
 

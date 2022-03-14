@@ -9,8 +9,8 @@ using Model.Repositories;
 namespace Model.Migrations
 {
     [DbContext(typeof(TestEntityContext))]
-    [Migration("20220314101253_fsff")]
-    partial class fsff
+    [Migration("20220314113830_LandConfig")]
+    partial class LandConfig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,8 @@ namespace Model.Migrations
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Naam")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("Oppervlakte")
                         .HasColumnType("real");
@@ -42,6 +43,9 @@ namespace Model.Migrations
                     b.HasKey("ISOLandCode");
 
                     b.HasIndex("ISOLandCode")
+                        .IsUnique();
+
+                    b.HasIndex("Naam")
                         .IsUnique();
 
                     b.ToTable("Landen");
@@ -179,68 +183,60 @@ namespace Model.Migrations
 
             modelBuilder.Entity("Model.Entities.LandTaal", b =>
                 {
-                    b.Property<string>("LandCode")
+                    b.Property<string>("ISOLandCode")
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<string>("TaalCode")
+                    b.Property<string>("ISOTaalCode")
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<string>("LandISOLandCode")
-                        .HasColumnType("nvarchar(2)");
+                    b.HasKey("ISOLandCode", "ISOTaalCode");
 
-                    b.Property<string>("TaalISOTaalCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LandCode", "TaalCode");
-
-                    b.HasIndex("LandISOLandCode");
-
-                    b.HasIndex("TaalISOTaalCode");
+                    b.HasIndex("ISOTaalCode");
 
                     b.ToTable("LandTaal");
 
                     b.HasData(
                         new
                         {
-                            LandCode = "BE",
-                            TaalCode = "de"
+                            ISOLandCode = "BE",
+                            ISOTaalCode = "de"
                         },
                         new
                         {
-                            LandCode = "DE",
-                            TaalCode = "de"
+                            ISOLandCode = "DE",
+                            ISOTaalCode = "de"
                         },
                         new
                         {
-                            LandCode = "LU",
-                            TaalCode = "de"
+                            ISOLandCode = "LU",
+                            ISOTaalCode = "de"
                         },
                         new
                         {
-                            LandCode = "BE",
-                            TaalCode = "fr"
+                            ISOLandCode = "BE",
+                            ISOTaalCode = "fr"
                         },
                         new
                         {
-                            LandCode = "FR",
-                            TaalCode = "fr"
+                            ISOLandCode = "FR",
+                            ISOTaalCode = "fr"
                         },
                         new
                         {
-                            LandCode = "LU",
-                            TaalCode = "fr"
+                            ISOLandCode = "LU",
+                            ISOTaalCode = "fr"
                         },
                         new
                         {
-                            LandCode = "BE",
-                            TaalCode = "nl"
+                            ISOLandCode = "BE",
+                            ISOTaalCode = "nl"
                         },
                         new
                         {
-                            LandCode = "NL",
-                            TaalCode = "nl"
+                            ISOLandCode = "NL",
+                            ISOTaalCode = "nl"
                         });
                 });
 
@@ -255,13 +251,16 @@ namespace Model.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<string>("LandISOLandCode")
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<string>("Naam")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("StadId");
 
-                    b.HasIndex("IsoLandCode");
+                    b.HasIndex("LandISOLandCode");
 
                     b.ToTable("Steden");
 
@@ -349,7 +348,8 @@ namespace Model.Migrations
             modelBuilder.Entity("Model.Entities.Taal", b =>
                 {
                     b.Property<string>("ISOTaalCode")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("NaamNL")
                         .HasMaxLength(50)
@@ -508,11 +508,17 @@ namespace Model.Migrations
                 {
                     b.HasOne("Model.Entities.Land", "Land")
                         .WithMany("LandTaal")
-                        .HasForeignKey("LandISOLandCode");
+                        .HasForeignKey("ISOLandCode")
+                        .HasConstraintName("FK_Reservatie_Land")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Model.Entities.Taal", "Taal")
                         .WithMany("LandTaal")
-                        .HasForeignKey("TaalISOTaalCode");
+                        .HasForeignKey("ISOTaalCode")
+                        .HasConstraintName("FK_Reservatie_Taal")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Land");
 
@@ -523,7 +529,7 @@ namespace Model.Migrations
                 {
                     b.HasOne("Model.Entities.Land", "Land")
                         .WithMany("Steden")
-                        .HasForeignKey("IsoLandCode");
+                        .HasForeignKey("LandISOLandCode");
 
                     b.Navigation("Land");
                 });

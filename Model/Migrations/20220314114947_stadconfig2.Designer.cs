@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Model.Repositories;
 
 namespace Model.Migrations
 {
     [DbContext(typeof(TestEntityContext))]
-    partial class TestEntityContextModelSnapshot : ModelSnapshot
+    [Migration("20220314114947_stadconfig2")]
+    partial class stadconfig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,11 +259,9 @@ namespace Model.Migrations
                         .HasColumnType("timestamp");
 
                     b.Property<string>("ISOLandCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("Naam")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -270,7 +270,8 @@ namespace Model.Migrations
                     b.HasIndex("ISOLandCode");
 
                     b.HasIndex("Naam")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Naam] IS NOT NULL");
 
                     b.ToTable("Steden");
 
@@ -549,8 +550,7 @@ namespace Model.Migrations
                         .WithMany("Steden")
                         .HasForeignKey("ISOLandCode")
                         .HasConstraintName("FK_Reservatie_Land1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Land");
                 });

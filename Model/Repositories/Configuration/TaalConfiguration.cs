@@ -11,14 +11,22 @@ namespace Model.Repositories.Configuration
             builder.HasKey(b => b.ISOTaalCode);
             builder.Property(b => b.ISOTaalCode).HasMaxLength(2);
 
-            builder.Property(b => b.NaamNL).HasMaxLength(50);
+            builder.Property(b => b.NaamNL).HasMaxLength(50).IsRequired();
 
             builder.Property(b => b.NaamTaal)
             .HasMaxLength(50);
 
-            builder.HasMany(b => b.LandTaal)
-.WithOne(b => b.Taal)
-.HasForeignKey(x => x.TaalCode);
+            builder
+.HasIndex(b => b.NaamNL)
+.IsUnique();
+
+            builder
+.HasIndex(b => b.NaamTaal)
+.IsUnique();
+
+            //            builder.HasMany(b => b.LandTaal)
+            //.WithOne(b => b.Taal)
+            //.HasForeignKey(x => x.TaalCode);
         }
     }
 }

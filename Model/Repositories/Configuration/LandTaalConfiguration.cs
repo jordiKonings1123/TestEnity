@@ -8,24 +8,24 @@ namespace Model.Repositories.Configuration
         public void Configure(EntityTypeBuilder<LandTaal> builder)
         {
 
-            //            builder.HasKey(c => new { c.LandCode, c.TaalCode });
+            builder.HasKey(c => new { c.ISOLandCode, c.ISOTaalCode });
 
-            //            builder.Property(b => b.LandCode)
-            //            .HasMaxLength(2);
-            //            builder.Property(b => b.TaalCode)
-            //.HasMaxLength(2);
+            builder.Property(b => b.ISOLandCode)
+            .HasMaxLength(2);
+            builder.Property(b => b.ISOTaalCode)
+.HasMaxLength(2);
 
-            //            builder.HasOne(b => b.Land)
-            //.WithMany(b => b.LandTaal)
-            //.HasForeignKey(b => b.LandCode)
-            //.OnDelete(DeleteBehavior.Cascade)
-            //.HasConstraintName("FK_Reservatie_Land");
+            builder.HasOne(b => b.Land)
+.WithMany(b => b.LandTaal)
+.HasForeignKey(b => b.ISOLandCode)
+.OnDelete(DeleteBehavior.Cascade)
+.HasConstraintName("FK_Reservatie_Land");
 
-            //            builder.HasOne(b => b.Taal)
-            //.WithMany(b => b.LandTaal)
-            //.HasForeignKey(b => b.TaalCode)
-            //.OnDelete(DeleteBehavior.Cascade)
-            //.HasConstraintName("FK_Reservatie_Taal");
+            builder.HasOne(b => b.Taal)
+.WithMany(b => b.LandTaal)
+.HasForeignKey(b => b.ISOTaalCode)
+.OnDelete(DeleteBehavior.Cascade)
+.HasConstraintName("FK_Reservatie_Taal");
         }
     }
 }

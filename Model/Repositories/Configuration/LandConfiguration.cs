@@ -15,9 +15,21 @@ namespace Model.Repositories.Configuration
             builder.Property(b => b.NISLandCode)
             .HasMaxLength(3);
 
-            builder.HasMany(b => b.LandTaal)
-    .WithOne(b => b.Land)
-    .HasForeignKey(x => x.LandCode);
+            builder.Property(b => b.Naam).IsRequired();
+
+            builder
+.HasIndex(b => b.Naam)
+.IsUnique();
+
+
+            builder
+            .Property(b => b.Aangepast).HasColumnType("timestamp");
+            builder
+            .Property(b => b.Aangepast)
+            .IsConcurrencyToken()
+            .ValueGeneratedOnAddOrUpdate();
+
+
 
 
 

@@ -16,9 +16,10 @@ namespace Model.Repositories
         // ------
         // DbSets
         // ------
-        public DbSet<Land> Genres { get; set; }
-        public DbSet<Stad> Klanten { get; set; }
-        public DbSet<Taal> Reservaties { get; set; }
+        public DbSet<Land> Land { get; set; }
+        public DbSet<Stad> Stad { get; set; }
+        public DbSet<Taal> Taal { get; set; }
+        public DbSet<LandTaal> LandTaal { get; set; }
         // ------------
         // Constructors
         // ------------
@@ -48,7 +49,7 @@ namespace Model.Repositories
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false)
                 .Build();
-                var connectionString = configuration.GetConnectionString("Test3");
+                var connectionString = configuration.GetConnectionString("Test5");
                 if (connectionString != null) // Indien de naam is gevonden
                 {
                     optionsBuilder.UseSqlServer(
@@ -93,7 +94,7 @@ namespace Model.Repositories
                 modelBuilder.ApplyConfiguration(new LandSeeding());
                 modelBuilder.ApplyConfiguration(new StadSeeding());
                 modelBuilder.ApplyConfiguration(new TaalSeeding());
-                //modelBuilder.ApplyConfiguration(new LandTaalSeeding());
+                modelBuilder.ApplyConfiguration(new LandTaalSeeding());
             }
         }
     }

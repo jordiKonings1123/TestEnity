@@ -9,14 +9,14 @@ namespace Model.Repositories.Seeding
         {
             builder.HasData
             (
-                new LandTaal { LandCode = "BE", TaalCode = "de" },
-                new LandTaal { LandCode = "DE", TaalCode = "de" },
-                new LandTaal { LandCode = "LU", TaalCode = "de" },
-                new LandTaal { LandCode = "BE", TaalCode = "fr" },
-                new LandTaal { LandCode = "FR", TaalCode = "fr" },
-                new LandTaal { LandCode = "LU", TaalCode = "fr" },
-                new LandTaal { LandCode = "BE", TaalCode = "nl" },
-                new LandTaal { LandCode = "NL", TaalCode = "nl" }
+                new LandTaal { ISOLandCode = "BE", ISOTaalCode = "de" },
+                new LandTaal { ISOLandCode = "DE", ISOTaalCode = "de" },
+                new LandTaal { ISOLandCode = "LU", ISOTaalCode = "de" },
+                new LandTaal { ISOLandCode = "BE", ISOTaalCode = "fr" },
+                new LandTaal { ISOLandCode = "FR", ISOTaalCode = "fr" },
+                new LandTaal { ISOLandCode = "LU", ISOTaalCode = "fr" },
+                new LandTaal { ISOLandCode = "BE", ISOTaalCode = "nl" },
+                new LandTaal { ISOLandCode = "NL", ISOTaalCode = "nl" }
 
 
             );

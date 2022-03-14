@@ -9,8 +9,8 @@ using Model.Repositories;
 namespace Model.Migrations
 {
     [DbContext(typeof(TestEntityContext))]
-    [Migration("20220314100649_fdf")]
-    partial class fdf
+    [Migration("20220314110749_fd")]
+    partial class fd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -191,7 +191,7 @@ namespace Model.Migrations
                         .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("TaalISOTaalCode")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(2)");
 
                     b.HasKey("LandCode", "TaalCode");
 
@@ -200,48 +200,6 @@ namespace Model.Migrations
                     b.HasIndex("TaalISOTaalCode");
 
                     b.ToTable("LandTaal");
-
-                    b.HasData(
-                        new
-                        {
-                            LandCode = "BE",
-                            TaalCode = "de"
-                        },
-                        new
-                        {
-                            LandCode = "DE",
-                            TaalCode = "de"
-                        },
-                        new
-                        {
-                            LandCode = "LU",
-                            TaalCode = "de"
-                        },
-                        new
-                        {
-                            LandCode = "BE",
-                            TaalCode = "fr"
-                        },
-                        new
-                        {
-                            LandCode = "FR",
-                            TaalCode = "fr"
-                        },
-                        new
-                        {
-                            LandCode = "LU",
-                            TaalCode = "fr"
-                        },
-                        new
-                        {
-                            LandCode = "BE",
-                            TaalCode = "nl"
-                        },
-                        new
-                        {
-                            LandCode = "NL",
-                            TaalCode = "nl"
-                        });
                 });
 
             modelBuilder.Entity("Model.Entities.Stad", b =>
@@ -255,13 +213,16 @@ namespace Model.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<string>("LandISOLandCode")
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<string>("Naam")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("StadId");
 
-                    b.HasIndex("IsoLandCode");
+                    b.HasIndex("LandISOLandCode");
 
                     b.ToTable("Steden");
 
@@ -349,7 +310,8 @@ namespace Model.Migrations
             modelBuilder.Entity("Model.Entities.Taal", b =>
                 {
                     b.Property<string>("ISOTaalCode")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("NaamNL")
                         .HasMaxLength(50)
@@ -523,7 +485,7 @@ namespace Model.Migrations
                 {
                     b.HasOne("Model.Entities.Land", "Land")
                         .WithMany("Steden")
-                        .HasForeignKey("IsoLandCode");
+                        .HasForeignKey("LandISOLandCode");
 
                     b.Navigation("Land");
                 });
