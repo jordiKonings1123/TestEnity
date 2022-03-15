@@ -3,6 +3,7 @@ using Model.Entities;
 using Model.Repositories;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace UI
 {
@@ -14,6 +15,8 @@ namespace UI
 
             bool exit = false;
             bool exit2 = false;
+
+            Regex rg = new Regex(@"[a-z]");
 
             Land gekozeland = null;
 
@@ -143,7 +146,7 @@ namespace UI
 
                                     if (stedenZelfde.Count() == 0)
                                     {
-                                        if (naamStad != "")
+                                        if (rg.IsMatch(naamStad))
                                         {
                                             gekozeland.Steden.Add(new Stad { Land = gekozeland, Naam = naamStad });
 
